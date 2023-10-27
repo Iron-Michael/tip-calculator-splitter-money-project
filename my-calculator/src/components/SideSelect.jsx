@@ -19,12 +19,21 @@ const SideSelect = () => {
   function SetPrice(event) {
     const newBill = parseFloat(event.target.value);
     SetBill(newBill);
+    setPrice((percent * Bill) / 100);
   }
 
   function selectPercent(percent) {
     SetCustom(true);
     setSelectedPercent(percent);
     setPrice((percent * Bill) / 100);
+  }
+
+  function handleCustomInput(event) {
+    const customPercent = parseFloat(event.target.value);
+    if (!isNaN(customPercent)) {
+      setSelectedPercent(customPercent);
+      setPrice((customPercent * Bill) / 100);
+    }
   }
 
   function calculateTipPerPerson() {
@@ -83,7 +92,13 @@ const SideSelect = () => {
               {Custom ? (
                 <div> Custom </div>
               ) : (
-                <input className="w-[100px]" onChange={Bill}></input>
+                <input
+                  type="number" // Use type="number" for the custom input
+                  className="w-[100px]"
+                  onChange={(e) => {
+                    handleCustomInput(e);
+                  }}
+                ></input>
               )}
             </button>
           </div>
@@ -99,6 +114,8 @@ const SideSelect = () => {
         </div>
       </div>
       <div className="my-5">
+        <div>Selected Tip %:</div>
+        <div>{Custom ? `${selectedPercent}` : `${selectedPercent}%`}</div>
         <div>Tip per Person:</div>
         <div>{calculateTipPerPerson()}</div>
       </div>
