@@ -18,7 +18,7 @@ const SideResult = () => {
           <div>/ Person</div>
         </div>
         <div>
-          <div>$0.00</div>
+          <div>$</div>
         </div>
       </div>
       <div className="flex justify-center mt-8 mx-8">
