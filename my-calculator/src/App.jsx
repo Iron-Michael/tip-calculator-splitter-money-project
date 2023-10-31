@@ -1,6 +1,7 @@
 import Calculator from "./components/Calculator";
 
 function App() {
+
   return (
     <>
       <div className="flex flex-col bg-teal-400 w-full h-screen justify-center items-center ">

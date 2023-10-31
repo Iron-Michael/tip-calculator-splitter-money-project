@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 const SideSelect = () => {
-  const [Custom, SetCustom] = useState(true);
-  const [Bill, SetBill] = useState(0);
+  const [custom, setCustom] = useState(true);
+  const [bill, setBill] = useState(0);
   const [selectedPercent, setSelectedPercent] = useState(0);
   const [people, setPeople] = useState(1);
   const [price, setPrice] = useState(0);
 
   function CustomInput() {
-    SetCustom(false);
+    setCustom(false);
   }
 
   function SetPeople(event) {
@@ -16,23 +16,23 @@ const SideSelect = () => {
     setPeople(newPeople);
   }
 
-  function SetPrice(event) {
+  function SetBill(event) {
     const newBill = parseFloat(event.target.value);
-    SetBill(newBill);
-    setPrice((percent * Bill) / 100);
+    setBill(newBill);
+    setPrice((selectedPercent * newBill) / 100);
   }
 
   function selectPercent(percent) {
-    SetCustom(true);
+    setCustom(true);
     setSelectedPercent(percent);
-    setPrice((percent * Bill) / 100);
+    setPrice((percent * bill) / 100);
   }
 
   function handleCustomInput(event) {
     const customPercent = parseFloat(event.target.value);
     if (!isNaN(customPercent)) {
       setSelectedPercent(customPercent);
-      setPrice((customPercent * Bill) / 100);
+      setPrice((customPercent * bill) / 100);
     }
   }
 
@@ -42,58 +42,37 @@ const SideSelect = () => {
     }
     return price / people;
   }
+
   return (
-    <div className="flex flex-col   w-[400px] h-[300px] mx-5 my-10 bg-slate-500 rounded-xl ">
+    <div className="flex flex-col w-[400px] h-[300px] mx-5 my-10 bg-slate-500 rounded-xl">
       <div className="mx-2">
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           <div>Bill</div>
           <input
-            type="number" // Use type="number" for the bill input
+            type="number"
             className="w-[300px] bg-blue-300 rounded-sm"
-            value={Bill}
-            onChange={SetPrice}
+            value={bill}
+            onChange={SetBill}
           ></input>
         </div>
-        <div className="flex flex-col  my-5">
+        <div className="flex flex-col my-5">
           <div>Select Tip %</div>
           <div className="grid grid-cols-3 gap-2">
-            <button
-              className="w-[100px] bg-emerald-300"
-              onClick={() => selectPercent(5)}
-            >
-              <div> 5% </div>
-            </button>
-            <button
-              className="w-[100px] bg-emerald-300"
-              onClick={() => selectPercent(10)}
-            >
-              <div> 10% </div>
-            </button>
-            <button
-              className="w-[100px] bg-emerald-300"
-              onClick={() => selectPercent(15)}
-            >
-              <div> 15% </div>
-            </button>
-            <button
-              className="w-[100px] bg-emerald-300"
-              onClick={() => selectPercent(25)}
-            >
-              <div> 25% </div>
-            </button>
-            <button
-              className="w-[100px] bg-emerald-300"
-              onClick={() => selectPercent(50)}
-            >
-              <div> 50% </div>
-            </button>
-
-            <button className="w-[100px] bg-emerald-300 " onClick={CustomInput}>
-              {Custom ? (
+            {[5, 10, 15, 25, 50].map((percent) => (
+              <button
+                key={percent}
+                className="w-[100px] bg-emerald-300"
+                onClick={() => selectPercent(percent)}
+              >
+                <div> {percent}% </div>
+              </button>
+            ))}
+            <button className="w-[100px] bg-emerald-300" onClick={CustomInput}>
+              {custom ? (
                 <div> Custom </div>
               ) : (
                 <input
-                  type="number" // Use type="number" for the custom input
+                  type="number"
                   className="w-[100px]"
                   onChange={(e) => {
                     handleCustomInput(e);
@@ -103,7 +82,7 @@ const SideSelect = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-col  my-5">
+        <div className="flex flex-col my-5">
           <div>Number of People</div>
           <input
             type="number"
@@ -114,10 +93,13 @@ const SideSelect = () => {
         </div>
       </div>
       <div className="my-5">
+        <div>Price:</div>
+        <div>{bill}</div>
         <div>Selected Tip %:</div>
-        <div>{Custom ? `${selectedPercent}` : `${selectedPercent}%`}</div>
+        <div>{selectedPercent}%</div>
         <div>Tip per Person:</div>
         <div>{calculateTipPerPerson()}</div>
+        <div>{bill / people + calculateTipPerPerson()}</div>
       </div>
     </div>
   );
