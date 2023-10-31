@@ -1,44 +1,17 @@
-// App.js (or your parent component)
-import React, { useState } from "react";
+import React from "react";
 import SideSelect from "./SideSelect";
 import SideResult from "./SideResult";
+import { TipCalculatorProvider } from "../contexts/Tipcalcalator";
 
-function App() {
-  // You can manage the state in the parent component
-  const [bill, setBill] = useState(0);
-  const [selectedPercent, setSelectedPercent] = useState(0);
-  const [people, setPeople] = useState(1);
-
-  // Define functions to update state in the parent component
-  const handleBillChange = (value) => {
-    setBill(value);
-  };
-
-  const handleSelectedPercentChange = (value) => {
-    setSelectedPercent(value);
-  };
-
-  const handlePeopleChange = (value) => {
-    setPeople(value);
-  };
-
+const Calculator = () => {
   return (
-    <div>
-      <SideSelect
-        bill={bill}
-        selectedPercent={selectedPercent}
-        people={people}
-        onBillChange={handleBillChange}
-        onSelectedPercentChange={handleSelectedPercentChange}
-        onPeopleChange={handlePeopleChange}
-      />
-      <SideResult
-        bill={bill}
-        selectedPercent={selectedPercent}
-        people={people}
-      />
-    </div>
+    <TipCalculatorProvider>
+      <div className="flex w-[800px] h-[400px] justify-center bg-white rounded-xl">
+        <SideSelect />
+        <SideResult />
+      </div>
+    </TipCalculatorProvider>
   );
-}
+};
 
-export default App;
+export default Calculator;

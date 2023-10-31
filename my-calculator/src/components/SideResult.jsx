@@ -1,10 +1,27 @@
 import React from "react";
 
-const SideResult = ({ bill, selectedPercent, people }) => {
-  const price = (selectedPercent * bill) / 100;
-  const tipPerPerson = people !== 0 ? price / people : 0;
-  const totalPerPerson = people !== 0 ? (bill + price) / people : 0;
+import { useTipCalculatorContext } from "../contexts/Tipcalcalator";
 
+const SideResult = () => {
+  const {
+    custom,
+    setCustom,
+    bill,
+    setBill,
+    selectedPercent,
+    setSelectedPercent,
+    people,
+    setPeople,
+    price,
+    setPrice,
+    CustomInput,
+    SetPeople,
+    SetBill,
+    selectPercent,
+    handleCustomInput,
+    calculateTipPerPerson,
+    resetState,
+  } = useTipCalculatorContext();
   return (
     <div className="flex flex-col w-[400px] h-[300px] mx-5 my-10 bg-slate-500 rounded-xl">
       <div className="mx-2">
@@ -14,7 +31,7 @@ const SideResult = ({ bill, selectedPercent, people }) => {
             <div>/ Person</div>
           </div>
           <div>
-            <div>${tipPerPerson.toFixed(2)}</div>
+            <div>{calculateTipPerPerson()}</div>
           </div>
         </div>
         <div className="flex w-[350px] justify-between my-5 mx-8">
@@ -23,11 +40,14 @@ const SideResult = ({ bill, selectedPercent, people }) => {
             <div>/ Person</div>
           </div>
           <div>
-            <div>${totalPerPerson.toFixed(2)}</div>
+            <div>{bill / people + calculateTipPerPerson()}</div>
           </div>
         </div>
         <div className="flex justify-center mt-8 mx-8">
-          <button className="bg-red-500 w-[500px] h-[50px] rounded-lg">
+          <button
+            onClick={() => resetState()}
+            className="bg-red-500 w-[500px] h-[50px] rounded-lg"
+          >
             RESET
           </button>
         </div>

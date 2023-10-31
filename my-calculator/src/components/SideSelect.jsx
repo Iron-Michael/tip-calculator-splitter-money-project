@@ -1,47 +1,25 @@
-import { useState } from "react";
+import React from "react";
+import { useTipCalculatorContext } from "../contexts/Tipcalcalator";
 
 const SideSelect = () => {
-  const [custom, setCustom] = useState(true);
-  const [bill, setBill] = useState(0);
-  const [selectedPercent, setSelectedPercent] = useState(0);
-  const [people, setPeople] = useState(1);
-  const [price, setPrice] = useState(0);
-
-  function CustomInput() {
-    setCustom(false);
-  }
-
-  function SetPeople(event) {
-    const newPeople = parseInt(event.target.value, 10);
-    setPeople(newPeople);
-  }
-
-  function SetBill(event) {
-    const newBill = parseFloat(event.target.value);
-    setBill(newBill);
-    setPrice((selectedPercent * newBill) / 100);
-  }
-
-  function selectPercent(percent) {
-    setCustom(true);
-    setSelectedPercent(percent);
-    setPrice((percent * bill) / 100);
-  }
-
-  function handleCustomInput(event) {
-    const customPercent = parseFloat(event.target.value);
-    if (!isNaN(customPercent)) {
-      setSelectedPercent(customPercent);
-      setPrice((customPercent * bill) / 100);
-    }
-  }
-
-  function calculateTipPerPerson() {
-    if (people === 0) {
-      return 0;
-    }
-    return price / people;
-  }
+  const {
+    custom,
+    setCustom,
+    bill,
+    setBill,
+    selectedPercent,
+    setSelectedPercent,
+    people,
+    setPeople,
+    price,
+    setPrice,
+    CustomInput,
+    SetPeople,
+    SetBill,
+    selectPercent,
+    handleCustomInput,
+    calculateTipPerPerson,
+  } = useTipCalculatorContext();
 
   return (
     <div className="flex flex-col w-[400px] h-[300px] mx-5 my-10 bg-slate-500 rounded-xl">
@@ -91,15 +69,6 @@ const SideSelect = () => {
             onChange={SetPeople}
           ></input>
         </div>
-      </div>
-      <div className="my-5">
-        <div>Price:</div>
-        <div>{bill}</div>
-        <div>Selected Tip %:</div>
-        <div>{selectedPercent}%</div>
-        <div>Tip per Person:</div>
-        <div>{calculateTipPerPerson()}</div>
-        <div>{bill / people + calculateTipPerPerson()}</div>
       </div>
     </div>
   );
